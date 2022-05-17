@@ -1,0 +1,14 @@
+{
+  "name": "matchmaker-back",
+  "version": "1.0.0",
+  "repository": "git@github.com:Amarakk/Matchmaker-back.git",
+  "author": "Wilgnne Khawan <wilgnne.kba@gmail.com>",
+  "contributors": [
+    "Amarakk",
+    "Arthur Zelindro",
+    "Hans Rafael Ruebenich",
+    "João Vitor Laurino",
+    "Wilgnne Khawan <wilgnne.kba@gmail.com>"
+  ],
+  "license": "MIT",
+}
