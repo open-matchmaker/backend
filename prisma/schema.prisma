@@ -19,7 +19,7 @@ enum Role {
 model Users {
   id       Int    @id @default(autoincrement())
   name     String
-  bio      String
+  bio      String @default("")
   email    String
   password String
 

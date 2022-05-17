@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
+import bcrypt from 'bcrypt';
 
 import prisma from '../database';
+import { User } from '../schema/User';
 
 export async function getAll(req: Request, res: Response) {
   const users = await prisma.users.findMany({
@@ -13,18 +15,33 @@ export async function getAll(req: Request, res: Response) {
   return res.json(users);
 }
 
-export async function createUser(req: Request, res: Response) {
-  if (!req.body) {
-    return res.status(400).send({ message: 'Contet can not be empty' });
-  }
-
+export async function createUser(req: Request<null, null, User>, res: Response) {
   const { name, email, password } = req.body;
+
+  const salt = await bcrypt.genSalt(+(process.env.SALT_ROUNDS || 10));
+  const hashedPassword = await bcrypt.hash(password, salt);
 
   const user = await prisma.users.create({
     data: {
       name,
       email,
-      password,
+      password: hashedPassword,
+    },
+  });
+
+  return res.json(user);
+}
+
+export async function findUserName(req: Request, res: Response) {
+  const { nameUser } = req.query.name as { nameUser: string };
+
+  if (!nameUser) return res.status(400).send({ message: 'nameUser can not be empty' });
+
+  const user = await prisma.users.findMany({
+    where: {
+      name: {
+        contains: nameUser,
+      },
     },
   });
 
