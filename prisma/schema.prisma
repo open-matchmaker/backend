@@ -1,0 +1,100 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  ADMIN
+  A_Gente
+}
+
+model Users {
+  id       Int    @id @default(autoincrement())
+  name     String
+  bio      String
+  email    String
+  password String
+
+  role              Role      @default(USER)
+  userFriends       Friends[] @relation(name: "users")
+  friendUserFriends Friends[] @relation(name: "friend_users")
+  playsGames        Games[]   @relation(name: "players")
+  posts             Posts[]   @relation(name: "posts")
+  managedGamed      Games?    @relation(name: "responsible_games")
+  Chat              Chat[]    @relation(name: "chat_users")
+  Message           Message[] @relation(name: "messages")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Friends {
+  id     Int     @id @default(autoincrement())
+  status Boolean @default(true)
+
+  user      Users @relation(name: "users", fields: [user_id], references: [id])
+  user_id   Int
+  friend    Users @relation(name: "friend_users", fields: [friend_id], references: [id])
+  friend_id Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([user_id, friend_id])
+}
+
+model Games {
+  id      Int    @id @default(autoincrement())
+  name    String
+  usersId Int    @unique
+
+  players     Users[] @relation(name: "players")
+  responsible Users   @relation(name: "responsible_games", fields: [usersId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Posts {
+  id      Int    @id @default(autoincrement())
+  content String
+  usersId Int
+
+  creator Users @relation(name: "posts", fields: [usersId], references: [id])
+
+  createdAt DateTime @default(now())
+  updateAt  DateTime @updatedAt
+}
+
+model Chat {
+  id Int @id @default(autoincrement())
+
+  messages Message[]
+  users    Users[]   @relation(name: "chat_users")
+
+
+  createdAt DateTime @default(now())
+  updateAt  DateTime @updatedAt
+}
+
+model Message {
+  id      Int    @id @default(autoincrement())
+  content String
+  usersId Int
+  chatId  Int
+
+  creator Users @relation(name: "messages", fields: [usersId], references: [id])
+  Chat    Chat  @relation(fields: [chatId], references: [id])
+
+
+  createdAt DateTime @default(now())
+  updateAt  DateTime @updatedAt
+}
