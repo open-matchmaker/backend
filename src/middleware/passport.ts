@@ -1,11 +1,9 @@
 import passport from 'passport';
 import pStrategy from 'passport-local';
-import bStrategy from 'passport-http-bearer'
 import bcrypt from 'bcrypt';
 import * as userService from '../services/user.service';
 // eslint-disable-next-line import/prefer-default-export
 export const LocalStrategy = pStrategy.Strategy;
-export const BearerStrategy = bStrategy.Strategy;
 
 class InvalidArgumentError extends Error {
   constructor(mensagem: string) {
