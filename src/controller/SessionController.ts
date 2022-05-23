@@ -22,8 +22,15 @@ async function login(req: Request<null, null, Login>, res: Response<Auth | { mes
   if (!isValid) return res.status(400).send({ message: 'Invalid email or password' });
 
   const token = JWT.sign({ user }, process.env.JWT_SECRET || '', { expiresIn: '1h' });
+  res.set('Authorization', token);
+  return res.status(204).send();
+}
 
-  return res.json({ token });
+function loginTest(req: any, res: Response) {
+  const payload = req.user;
+  const token = JWT.sign(payload, process.env.JWT_SECRET || '', { expiresIn: '1h' });
+  res.set('Authorization', token);
+  return res.status(201).send('Autorizado');
 }
 
 async function refresh(req: Request, res: Response<Auth | { message: string }>) {
@@ -33,7 +40,7 @@ async function refresh(req: Request, res: Response<Auth | { message: string }>) 
 
   const token = authorization.split(' ')[1];
 
-  const { user } = JWT.verify(token, process.env.JWT_SECRET || '', { ignoreExpiration: true }) as {user: Users};
+  const { user } = JWT.verify(token, process.env.JWT_SECRET || '', { ignoreExpiration: true }) as { user: Users };
 
   const newToken = JWT.sign(user, process.env.JWT_SECRET || '', { expiresIn: '1h' });
 
@@ -42,5 +49,6 @@ async function refresh(req: Request, res: Response<Auth | { message: string }>) 
 
 export default {
   login,
+  loginTest,
   refresh,
 };

@@ -1,10 +1,13 @@
 import express from 'express';
-
+import passport from 'passport';
 import router from './router';
+import './middleware/passport';
 
 const app = express();
 const port = process.env.PORT || 3000;
 
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(express.json());
 app.use(router);
 
