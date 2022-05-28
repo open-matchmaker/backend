@@ -4,6 +4,10 @@ import bcrypt from 'bcrypt';
 import prisma from '../database';
 import { User } from '../schema/User';
 
+export async function whoami(req: Request, res: Response) {
+  return res.json(req.user);
+}
+
 export async function getAll(req: Request, res: Response) {
   const users = await prisma.users.findMany({
     include: {
@@ -16,14 +20,14 @@ export async function getAll(req: Request, res: Response) {
 }
 
 export async function createUser(req: Request<null, null, User>, res: Response) {
-  const { name, email, password } = req.body;
+  const { username, email, password } = req.body;
 
   const salt = await bcrypt.genSalt(+(process.env.SALT_ROUNDS || 10));
   const hashedPassword = await bcrypt.hash(password, salt);
 
   const user = await prisma.users.create({
     data: {
-      name,
+      username,
       email,
       password: hashedPassword,
     },
@@ -39,7 +43,7 @@ export async function findUserName(req: Request, res: Response) {
 
   const user = await prisma.users.findMany({
     where: {
-      name: {
+      username: {
         contains: nameUser,
       },
     },

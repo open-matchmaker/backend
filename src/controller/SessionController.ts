@@ -1,36 +1,28 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { Users } from '@prisma/client';
-import bcrypt from 'bcrypt';
 import JWT from 'jsonwebtoken';
+import passport from 'passport';
 
-import { Login, Auth } from '../schema/Session';
-import prisma from '../database';
+import { Auth } from '../schema/Session';
 
-async function login(req: Request<null, null, Login>, res: Response<Auth | { message: string }>) {
-  const { email, password } = req.body;
+function login(req: Request, res: Response, next: NextFunction) {
+  passport.authenticate(
+    'local',
+    { session: false },
+    (err, user, info) => {
+      if (err) return res.status(500).json({ err });
 
-  const user = await prisma.users.findFirst({
-    where: {
-      email,
+      if (!user) {
+        const { message } = info;
+        return res.status(401).json({ message });
+      }
+
+      const token = JWT.sign({ user }, process.env.JWT_SECRET || '', { expiresIn: '1h' });
+
+      return res.status(200)
+        .send({ token });
     },
-  });
-
-  if (!user) return res.status(400).send({ message: 'Invalid email or password' });
-
-  const isValid = await bcrypt.compare(password, user.password);
-
-  if (!isValid) return res.status(400).send({ message: 'Invalid email or password' });
-
-  const token = JWT.sign({ user }, process.env.JWT_SECRET || '', { expiresIn: '1h' });
-  res.set('Authorization', token);
-  return res.status(204).send();
-}
-
-function loginTest(req: any, res: Response) {
-  const payload = req.user;
-  const token = JWT.sign(payload, process.env.JWT_SECRET || '', { expiresIn: '1h' });
-  res.set('Authorization', token);
-  return res.status(201).send('Autorizado');
+  )(req, res, next);
 }
 
 async function refresh(req: Request, res: Response<Auth | { message: string }>) {
@@ -49,6 +41,5 @@ async function refresh(req: Request, res: Response<Auth | { message: string }>) 
 
 export default {
   login,
-  loginTest,
   refresh,
 };

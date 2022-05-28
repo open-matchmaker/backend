@@ -11,13 +11,13 @@ export async function getUserByEmail(email: string) {
   return user;
 }
 
-export async function createUserService(name: string, email: string, password: string) {
+export async function createUserService(username: string, email: string, password: string) {
   const salt = await bcrypt.genSalt(+(process.env.SALT_ROUNDS || 10));
   const hashedPassword = await bcrypt.hash(password, salt);
 
   const user = await prisma.users.create({
     data: {
-      name,
+      username,
       email,
       password: hashedPassword,
     },
