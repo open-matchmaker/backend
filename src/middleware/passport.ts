@@ -3,7 +3,7 @@ import { Strategy as LocalStrategy } from 'passport-local';
 import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
 import bcrypt from 'bcrypt';
 
-import * as userService from '../services/user.service';
+import UserService from '../services/User.Service';
 
 async function verifyPassword(password: string, hashedPassword: string) {
   return bcrypt.compare(password, hashedPassword);
@@ -14,6 +14,12 @@ passport.use(new LocalStrategy(
   async (email, password, done) => {
     try {
       const user = await userService.getUserByEmail(email);
+
+      if (!user) {
+        done(null, false, { message: 'Invalid password' });
+        return;
+      }
+
       const isValid = await verifyPassword(password, user.password);
 
       if (!isValid) {
