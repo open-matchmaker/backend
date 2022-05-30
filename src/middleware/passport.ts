@@ -10,9 +10,10 @@ async function verifyPassword(password: string, hashedPassword: string) {
 }
 
 passport.use(new LocalStrategy(
-  async (username, password, done) => {
+  { usernameField: 'email' },
+  async (email, password, done) => {
     try {
-      const user = await UserService.getByEmail(username);
+      const user = await userService.getUserByEmail(email);
 
       if (!user) {
         done(null, false, { message: 'Invalid password' });
