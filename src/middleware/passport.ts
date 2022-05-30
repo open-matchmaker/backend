@@ -13,17 +13,17 @@ passport.use(new LocalStrategy(
   { usernameField: 'email' },
   async (email, password, done) => {
     try {
-      const user = await userService.getUserByEmail(email);
+      const user = await UserService.getByEmail(email);
 
       if (!user) {
-        done(null, false, { message: 'Invalid password' });
+        done(null, false, { message: 'Invalid email or password' });
         return;
       }
 
       const isValid = await verifyPassword(password, user.password);
 
       if (!isValid) {
-        done(null, false, { message: 'Invalid password' });
+        done(null, false, { message: 'Invalid email or password' });
         return;
       }
 
