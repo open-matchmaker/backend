@@ -15,10 +15,12 @@ export async function getAll(req: Request, res: Response) {
 
 export async function createUser(req: Request<null, null, User>, res: Response) {
   const { username, email, password } = req.body;
-
-  const user = await UserService.create({ username, email, password });
-
-  return res.json(user);
+  try {
+    const user = await UserService.create({ username, email, password });
+    return res.json(user);
+  } catch (err: any) {
+    return res.status(400).json({ message: err.message });
+  }
 }
 
 export async function findUserName(req: Request, res: Response) {

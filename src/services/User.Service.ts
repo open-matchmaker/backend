@@ -46,6 +46,9 @@ export default {
   },
 
   async create({ username, email, password }: User) {
+    const existedUser = await this.getByEmail(email);
+    if (existedUser) throw Error('Email already exists');
+
     const salt = await bcrypt.genSalt(+(process.env.SALT_ROUNDS || 10));
     const hashedPassword = await bcrypt.hash(password, salt);
 
