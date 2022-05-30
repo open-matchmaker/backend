@@ -15,8 +15,7 @@
     "start": "node dist/index.js",
     "dev": "nodemon --exec ts-node src/index.ts",
     "build": "tsc",
-    "migrate:deploy": "npx prisma migrate deploy",
-    "release": "yarn build && yarn migrate:deploy"
+    "migrate:deploy": "npx prisma migrate deploy"
   },
   "dependencies": {
     "@prisma/client": "3.14.0",

@@ -1,2 +1,2 @@
 web: yarn start
-release: yarn release
+release: yarn migrate:deploy
