@@ -27,7 +27,9 @@ export default {
   async getByUsername(username: string) {
     const users = await prisma.users.findMany({
       where: {
-        username,
+        username: {
+          contains: username,
+        },
       },
     });
 
