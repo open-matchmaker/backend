@@ -9,7 +9,7 @@ router.get('/whoami', passport.authenticate('jwt', { session: false }), UserCont
 
 router.patch('/update', passport.authenticate('jwt', { session: false }), UserController.updateUser);
 
-router.delete('/delete', passport.authenticate('jwt', { session: false }), UserController.deleteUser);
+router.delete('/delete/:id', passport.authenticate('jwt', { session: false }), UserController.deleteUser);
 
 router.get('/', UserController.getAll);
 
