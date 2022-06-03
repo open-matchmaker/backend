@@ -7,6 +7,33 @@ export async function whoami(req: Request, res: Response) {
   return res.json(req.user);
 }
 
+export async function updateUser(req: Request, res: Response) {
+  const dataUpdate = req.body;
+  const { id } = req.user as { id: number };
+
+  if ((Object.keys(dataUpdate).length === 0 && dataUpdate.constructor === Object)) return res.send('Without data to update!');
+
+  try {
+    await UserService.updateUser(id, dataUpdate);
+
+    return res.json(id);
+  } catch (error) {
+    return res.status(400).json({ message: error });
+  }
+}
+
+export async function deleteUser(req: Request, res: Response) {
+  const { id } = req.params;
+
+  try {
+    await UserService.deleteUser(Number(id));
+
+    return res.status(200).json({ message: 'User deleted!' });
+  } catch (error) {
+    return res.status(400).json({ message: error });
+  }
+}
+
 export async function getAll(req: Request, res: Response) {
   const users = await UserService.getAll();
 
