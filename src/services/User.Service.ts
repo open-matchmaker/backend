@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 
 import prisma from '../database';
-import { User, UserUpdate } from '../schema/User';
+import { User } from '../schema/User';
 
 export default {
   async getById(id: number) {
@@ -27,7 +27,9 @@ export default {
   async getByUsername(username: string) {
     const users = await prisma.users.findMany({
       where: {
-        username,
+        username: {
+          contains: username,
+        },
       },
     });
 
@@ -54,7 +56,7 @@ export default {
     return deletedUser;
   },
 
-  async updateUser(id: number, newDataUser: UserUpdate) {
+  async updateUser(id: number, newDataUser: Partial<User>) {
     const userUpdate = await prisma.users.update({
       where: { id },
       data: newDataUser,

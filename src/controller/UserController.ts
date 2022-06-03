@@ -23,12 +23,12 @@ export async function updateUser(req: Request, res: Response) {
 }
 
 export async function deleteUser(req: Request, res: Response) {
-  const { id, username } = req.user as { id: number, username: string };
+  const { id } = req.query;
 
   try {
-    await UserService.deleteUser(id);
+    await UserService.deleteUser(Number(id));
 
-    return res.status(200).json({ message: `User ${username} deleted!` });
+    return res.status(200).json({ message: 'User deleted!' });
   } catch (error) {
     return res.status(400).json({ message: error });
   }

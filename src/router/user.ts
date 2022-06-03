@@ -5,16 +5,18 @@ import * as UserController from '../controller/UserController';
 
 const router = Router();
 
-router.get('/whoami', passport.authenticate('jwt', { session: false, failureRedirect: '/' }), UserController.whoami);
+router.get('/whoami', passport.authenticate('jwt', { session: false }), UserController.whoami);
 
-router.patch('/update', passport.authenticate('jwt', { session: false, failureRedirect: '/' }), UserController.updateUser);
+router.patch('/update', passport.authenticate('jwt', { session: false }), UserController.updateUser);
 
-router.delete('/delete', passport.authenticate('jwt', { session: false, failureRedirect: '/' }), UserController.deleteUser);
+router.delete('/delete', passport.authenticate('jwt', { session: false }), UserController.deleteUser);
 
 router.get('/', UserController.getAll);
 
 router.post('/', UserController.createUser);
 
 router.post('/invite', UserController.sendInvite);
+
+router.get('/find', UserController.findUserName);
 
 export default router;
