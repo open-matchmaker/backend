@@ -23,7 +23,7 @@ export async function updateUser(req: Request, res: Response) {
 }
 
 export async function deleteUser(req: Request, res: Response) {
-  const { id } = req.query;
+  const { id } = req.params;
 
   try {
     await UserService.deleteUser(Number(id));
