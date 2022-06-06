@@ -34,7 +34,7 @@ async function refresh(req: Request, res: Response<Auth | { message: string }>) 
 
   const { user } = JWT.verify(token, process.env.JWT_SECRET || '', { ignoreExpiration: true }) as { user: Users };
 
-  const newToken = JWT.sign(user, process.env.JWT_SECRET || '', { expiresIn: '1h' });
+  const newToken = JWT.sign({ user }, process.env.JWT_SECRET || '', { expiresIn: '1h' });
 
   return res.json({ token: newToken });
 }

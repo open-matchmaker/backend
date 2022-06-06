@@ -65,6 +65,7 @@ model Games {
 
 model Posts {
   id      Int    @id @default(autoincrement())
+  parent  Posts? @relation(name: "parent_post", fields: [postsId], references: [id])
   content String
   usersId Int
 
@@ -72,6 +73,8 @@ model Posts {
 
   createdAt DateTime @default(now())
   updateAt  DateTime @updatedAt
+  Comments  Posts[]  @relation(name: "parent_post")
+  postsId   Int?
 }
 
 model Chat {
