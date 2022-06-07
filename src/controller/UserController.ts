@@ -69,3 +69,15 @@ export async function sendInvite(req: Request, res: Response) {
     return res.status(400).send({ message: error.message });
   }
 }
+
+export async function acceptInvite(req: Request, res: Response) {
+  const { fromId, toId } = req.body;
+
+  try {
+    const invite = await UserService.acceptInvite(fromId, toId);
+
+    return res.json(invite);
+  } catch (error) {
+    return res.status(400).json({ message: error });
+  }
+}

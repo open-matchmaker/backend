@@ -17,6 +17,8 @@ router.post('/', UserController.createUser);
 
 router.post('/invite', UserController.sendInvite);
 
+router.post('/acceptInvite', UserController.acceptInvite);
+
 router.get('/find', UserController.findUserName);
 
 export default router;
