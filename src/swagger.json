@@ -1,0 +1,70 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Documentação do Matchmaker",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/",
+      "description": "Servidor local"
+    },
+    {
+      "url": "https://matchmaker-node.herokuapp.com/",
+      "description": "Servidor Heroku"
+    }
+  ],
+  "paths": {
+    "/user": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Lista todos os usuários",
+        "description": "Retorna todos os usuários cadastrados",
+        "operationId": "getUsers",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucesso",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        }
+      }
+    },
+    "/user/find?username={username}": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Busca um usuário pelo username",
+        "description": "Retorna um usuário pelo username",
+        "operationId": "getUserByUsername",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "Username do usuário",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucesso",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        }
+      }
+    }
+  }
+}
