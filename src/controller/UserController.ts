@@ -59,13 +59,30 @@ export async function findUserName(req: Request, res: Response) {
 }
 
 export async function sendInvite(req: Request, res: Response) {
-  const { fromId, toId } = req.body;
+  const { toId } = req.body;
+  const { user } = req;
+
+  if (!user) return res.status(401).json({ message: 'Unauthorized' });
 
   try {
-    const invite = await UserService.invite(fromId, toId);
+    const invite = await UserService.invite(user.id, toId);
 
     return res.json(invite);
   } catch (error: any) {
     return res.status(400).send({ message: error.message });
+  }
+}
+
+export async function acceptInvite(req: Request, res: Response) {
+  const { fromId } = req.body;
+  const { user } = req;
+  if (!user) return res.status(401).json({ message: 'Unauthorized' });
+
+  try {
+    const invite = await UserService.acceptInvite(fromId, user.id);
+
+    return res.json(invite);
+  } catch (error) {
+    return res.status(400).json({ message: error });
   }
 }
