@@ -51,7 +51,7 @@ export async function createUser(req: Request<null, null, User>, res: Response) 
 }
 
 export async function findUserName(req: Request, res: Response) {
-  const { username } = req.query.name as { username: string };
+  const { username } = req.query as { username: string };
 
   const users = await UserService.getByUsername(username);
 
