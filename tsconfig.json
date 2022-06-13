@@ -5,7 +5,6 @@
   "compilerOptions": {
     "sourceMap": true,
     "outDir": "dist",
-    "rootDir": "src",
     "resolveJsonModule": true,
     "strict": true,
     "lib": [
@@ -17,6 +16,7 @@
     ],
   },
   "include": [
-    "src/**/*"
+    "src/**/*",
+    "swagger.json"
   ]
 }

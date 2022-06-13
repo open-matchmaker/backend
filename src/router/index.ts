@@ -1,17 +1,17 @@
 import { Router } from 'express';
 
-// import swaggerUi from 'swagger-ui-express';
+import swaggerUi from 'swagger-ui-express';
 import user from './user';
 import session from './session';
 import post from './post';
 import game from './game';
 
+import swaggerDocument from '../swagger.json';
+
 const router = Router();
-const swaggerUi = require('swagger-ui-express');
-const swaggerDocument = require('../swagger.json');
 
 router.get('/', (_req, res) => res.send('Hello World! matchmaker-api'));
-router.get('/api-docs', swaggerUi.setup(swaggerDocument));
+router.get('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 router.use('/user', user);
 router.use('/session', session);
