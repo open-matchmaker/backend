@@ -32,7 +32,7 @@ export default {
     if (!user) return res.status(401).json({ message: 'Unauthorized' });
 
     try {
-      const game = await GameService.addGameToUser(user, id);
+      const game = await GameService.followGameToUser(user, id);
       return res.status(200).json(game.username);
     } catch (error) {
       return res.status(500).json(error);
