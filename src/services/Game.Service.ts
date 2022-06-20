@@ -7,7 +7,7 @@ export default {
     const game = await prisma.games.create({
       data: {
         name,
-        usersId: creator.id,
+        responsible: { connect: { id: creator.id } },
       },
     });
 
@@ -70,7 +70,7 @@ export default {
     return game;
   },
 
-  async addGameToUser(user: Users, id: number) {
+  async followGameToUser(user: Users, id: number) {
     const findGame = this.getById(id);
 
     if (!findGame) throw new Error('Game not found');

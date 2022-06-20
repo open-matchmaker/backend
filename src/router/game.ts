@@ -11,8 +11,8 @@ router.get('/', passport.authenticate('jwt', { session: false }), (GameControlle
 
 router.post('/', passport.authenticate('jwt', { session: false }), (GameController.create));
 
-router.post('/add', passport.authenticate('jwt', { session: false }), (GameController.addGameToUser));
+router.patch('/add', passport.authenticate('jwt', { session: false }), (GameController.addGameToUser));
 
-router.post('/delete', passport.authenticate('jwt', { session: false }), (GameController.deleteGameFromUser));
+router.patch('/delete', passport.authenticate('jwt', { session: false }), (GameController.deleteGameFromUser));
 
 export default router;

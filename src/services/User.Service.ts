@@ -42,6 +42,7 @@ export default {
         friendUserFriends: true,
         userFriends: true,
         playsGames: true,
+        Reports: true,
       },
     });
 

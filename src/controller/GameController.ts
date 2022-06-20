@@ -1,5 +1,7 @@
 import { Request, Response } from 'express';
 
+import { Game } from '../schema/Game';
+
 import GameService from '../services/Game.Service';
 
 export default {
@@ -30,7 +32,7 @@ export default {
     if (!user) return res.status(401).json({ message: 'Unauthorized' });
 
     try {
-      const game = await GameService.addGameToUser(user, id);
+      const game = await GameService.followGameToUser(user, id);
       return res.status(200).json(game.username);
     } catch (error) {
       return res.status(500).json(error);
@@ -50,13 +52,18 @@ export default {
     }
   },
 
-  async getByName(req: Request, res: Response) {
-    const { game } = req.params;
+  async getByName(req: Request<{}, {}, {}, Game>, res: Response) {
+    const { query } = req;
 
-    if (!game) return res.status(400).json({ message: 'Params Required' });
+    const { name } = query;
 
     try {
-      const games = await GameService.getByName(game);
+      const games = await GameService.getByName(name);
+
+      if (games.length === 0) {
+        return res.status(404).json({ message: 'Game not found' });
+      }
+
       return res.status(200).json(games);
     } catch (error) {
       return res.status(500).json(error);
