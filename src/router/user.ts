@@ -21,4 +21,6 @@ router.post('/acceptInvite', passport.authenticate('jwt', { session: false }), U
 
 router.get('/find', UserController.findUserName);
 
+router.get('/findID/:id', passport.authenticate('jwt', { session: false }), UserController.getUserByID);
+
 export default router;

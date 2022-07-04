@@ -9,8 +9,12 @@ export default {
       where: {
         id,
       },
+      include: {
+        friendUserFriends: true,
+        userFriends: true,
+        playsGames: true,
+      },
     });
-
     return user;
   },
 
