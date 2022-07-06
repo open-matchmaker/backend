@@ -4,7 +4,24 @@ import { User } from '../schema/User';
 import UserService from '../services/User.Service';
 
 export async function whoami(req: Request, res: Response) {
-  return res.json(req.user);
+  const { id } = req.user as { id: number };
+
+  try {
+    const user = await UserService.getById(id);
+    return res.json(user);
+  } catch (error) {
+    return res.status(400).json({ message: error });
+  }
+}
+
+export async function getUserByID(req: Request<{id: number}>, res: Response) {
+  const { id } = req.params;
+  try {
+    const user = await UserService.getById(Number(id));
+    return res.json(user);
+  } catch (error) {
+    return res.status(400).json({ message: error });
+  }
 }
 
 export async function updateUser(req: Request, res: Response) {
