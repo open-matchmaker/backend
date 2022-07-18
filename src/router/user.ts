@@ -17,7 +17,11 @@ router.post('/', UserController.createUser);
 
 router.post('/invite', passport.authenticate('jwt', { session: false }), UserController.sendInvite);
 
-router.post('/acceptInvite', passport.authenticate('jwt', { session: false }), UserController.acceptInvite);
+router.post('/acceptinvite', passport.authenticate('jwt', { session: false }), UserController.acceptInvite);
+
+router.post('/declineinvite', passport.authenticate('jwt', { session: false }), UserController.declineInvite);
+
+router.post('/deletefriend', passport.authenticate('jwt', { session: false }), UserController.declineInvite);
 
 router.get('/find', UserController.findUserName);
 
