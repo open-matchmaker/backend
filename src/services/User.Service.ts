@@ -152,4 +152,38 @@ export default {
 
     return acceptinvite;
   },
+
+  async declineInvite(fromId: number, toId: number) {
+    const fromUser = await prisma.users.findUnique({
+      where: {
+        id: fromId,
+      },
+    });
+
+    const toUser = await prisma.users.findUnique({
+      where: {
+        id: toId,
+      },
+    });
+
+    if (!fromUser || !toUser) {
+      throw new Error('User not found');
+    }
+
+    await prisma.friends.deleteMany({
+      where: {
+        user_id: fromId,
+        friend_id: toId,
+      },
+    });
+
+    const declineinvite = await prisma.friends.deleteMany({
+      where: {
+        user_id: toId,
+        friend_id: fromId,
+      },
+    });
+
+    return declineinvite;
+  },
 };
