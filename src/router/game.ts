@@ -15,4 +15,6 @@ router.patch('/add', passport.authenticate('jwt', { session: false }), (GameCont
 
 router.patch('/delete', passport.authenticate('jwt', { session: false }), (GameController.deleteGameFromUser));
 
+router.patch('/:update', passport.authenticate('jwt', { session: false }), (GameController.updateGame));
+
 export default router;

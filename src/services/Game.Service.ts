@@ -1,17 +1,27 @@
-import { Users } from '@prisma/client';
+import { Games, Users } from '@prisma/client';
 
 import prisma from '../database';
 
 export default {
-  async create(creator: Users, name: string) {
+  async create(creator: Users, name: string, bio: string) {
     const game = await prisma.games.create({
       data: {
         name,
+        bio,
         responsible: { connect: { id: creator.id } },
       },
     });
 
     return game;
+  },
+
+  async updateGame(id: number, newDataGame: Partial<Games>) {
+    const gameUpdated = await prisma.games.update({
+      where: { id },
+      data: newDataGame,
+    });
+
+    return gameUpdated;
   },
 
   async deleteGame(id: number) {

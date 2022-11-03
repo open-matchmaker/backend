@@ -6,13 +6,13 @@ import GameService from '../services/Game.Service';
 
 export default {
   async create(req: Request, res: Response) {
-    const { name } = req.body;
+    const { name, bio } = req.body;
     const { user } = req;
 
     if (!user) return res.status(401).json({ message: 'Unauthorized' });
 
     try {
-      const game = await GameService.create(user, name);
+      const game = await GameService.create(user, name, bio);
       return res.status(200).json(game);
     } catch (error) {
       return res.status(500).json(error);
@@ -49,6 +49,22 @@ export default {
       return res.status(200).json(gameDeleted.username);
     } catch (error) {
       return res.status(500).json(error);
+    }
+  },
+
+  async updateGame(req: Request, res: Response) {
+    const dataUpdate = req.body;
+    const { query } = req;
+    const { game } = query;
+
+    if ((Object.keys(dataUpdate).length === 0 && dataUpdate.constructor === Object)) return res.send('Without data to update!');
+
+    try {
+      await GameService.updateGame(Number(game), dataUpdate);
+
+      return res.json(game);
+    } catch (error) {
+      return res.status(400).json({ message: error });
     }
   },
 

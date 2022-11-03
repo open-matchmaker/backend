@@ -71,6 +71,8 @@ model Games {
   id      Int    @id @default(autoincrement())
   name    String
   usersId Int    @unique
+  bio     String @default("")
+  photoId String @default("")
 
   players     Users[] @relation(name: "players")
   responsible Users   @relation(name: "responsible_games", fields: [usersId], references: [id])
@@ -99,7 +101,6 @@ model Chat {
   messages Message[]
   users    Users[]   @relation(name: "chat_users")
 
-
   createdAt DateTime @default(now())
   updateAt  DateTime @updatedAt
 }
@@ -112,7 +113,6 @@ model Message {
 
   creator Users @relation(name: "messages", fields: [usersId], references: [id])
   Chat    Chat  @relation(fields: [chatId], references: [id])
-
 
   createdAt DateTime @default(now())
   updateAt  DateTime @updatedAt

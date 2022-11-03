@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Games" ADD COLUMN     "bio" TEXT NOT NULL DEFAULT E'',
+ADD COLUMN     "photoId" TEXT NOT NULL DEFAULT E'';
