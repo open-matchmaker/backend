@@ -1,17 +1,13 @@
 import { Router } from 'express';
 import passport from 'passport';
-import * as ImageController from '../controller/ImageController';
+import ImageController from '../controller/ImageController';
+import upload from '../middleware/aws';
 
 const router = Router();
 
-router.get('/', ImageController.getAll);
+router.post('/delete', passport.authenticate('jwt', { session: false }), ImageController.deleteImage);
 
-router.post('/', passport.authenticate('jwt', { session: false }), ImageController.createImage);
-
-router.get('/:id', ImageController.getImage);
-
-router.patch('/:id', passport.authenticate('jwt', { session: false }), ImageController.updateImage);
-
-router.delete('/:id', passport.authenticate('jwt', { session: false }), ImageController.deleteImage);
+// post and updated will be the same thing
+router.patch('/upload', passport.authenticate('jwt', { session: false }), upload.array('imageFile', 1), ImageController.updateImage);
 
 export default router;
