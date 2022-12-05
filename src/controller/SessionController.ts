@@ -17,7 +17,7 @@ function login(req: Request, res: Response, next: NextFunction) {
         return res.status(401).json({ message });
       }
 
-      const token = JWT.sign({ user }, process.env.JWT_SECRET || '', { expiresIn: '1h' });
+      const token = JWT.sign({ user }, process.env.JWT_SECRET || '', { expiresIn: '30d' });
 
       return res.status(200)
         .send({ token });
@@ -34,7 +34,7 @@ async function refresh(req: Request, res: Response<Auth | { message: string }>) 
 
   const { user } = JWT.verify(token, process.env.JWT_SECRET || '', { ignoreExpiration: true }) as { user: Users };
 
-  const newToken = JWT.sign({ user }, process.env.JWT_SECRET || '', { expiresIn: '1h' });
+  const newToken = JWT.sign({ user }, process.env.JWT_SECRET || '', { expiresIn: '30d' });
 
   return res.json({ token: newToken });
 }
