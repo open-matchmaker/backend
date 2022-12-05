@@ -6,8 +6,9 @@ import session from './session';
 import post from './post';
 import game from './game';
 import report from './report';
-import swaggerDocument from '../swagger.json';
 import image from './image';
+
+import swaggerDocument from '../swagger.json';
 
 const router = Router();
 
