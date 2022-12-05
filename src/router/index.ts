@@ -6,6 +6,7 @@ import session from './session';
 import post from './post';
 import game from './game';
 import report from './report';
+import image from './image';
 
 import swaggerDocument from '../swagger.json';
 
@@ -19,6 +20,7 @@ router.use('/session', session);
 router.use('/post', post);
 router.use('/game', game);
 router.use('/report', report);
+router.use('/image', image);
 router.use('/api-docs', swaggerUi.serve);
 
 export default router;

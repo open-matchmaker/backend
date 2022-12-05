@@ -23,6 +23,7 @@ model Users {
   bio      String @default("")
   email    String @unique
   password String
+  image    String @default("")
 
   role              Role      @default(USER)
   userFriends       Friends[] @relation(name: "users")
@@ -99,7 +100,6 @@ model Chat {
   messages Message[]
   users    Users[]   @relation(name: "chat_users")
 
-
   createdAt DateTime @default(now())
   updateAt  DateTime @updatedAt
 }
@@ -112,7 +112,6 @@ model Message {
 
   creator Users @relation(name: "messages", fields: [usersId], references: [id])
   Chat    Chat  @relation(fields: [chatId], references: [id])
-
 
   createdAt DateTime @default(now())
   updateAt  DateTime @updatedAt
